@@ -4,6 +4,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { NotFoundException } from '@nestjs/common/exceptions';
 
 @Injectable()
 export class UsersService {
@@ -13,19 +14,32 @@ export class UsersService {
     return createdUser.save();
   }
 
-  findAll() {
-    return `This action returns all users`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} user`;
-  }
+  async updateUser(userId: string, updateStudentDto: UpdateUserDto): Promise<UserDocument> {
+    const existingUser = await this.userModel.findByIdAndUpdate(userId, updateStudentDto, { new: true });
+   if (!existingUser) {
+     throw new NotFoundException(`Student #${userId} not found`);
+   }
+   return existingUser;
+}
+async getAllUsers(): Promise<UserDocument[]> {
+    const userData = await this.userModel.find();
+    if (!userData || userData.length == 0) {
+        throw new NotFoundException('Students data not found!');
+    }
+    return userData;
+}
+async getUser(userId: string): Promise<UserDocument> {
+   const existingUser = await this.userModel.findOne({_id:userId}).exec();
+   if (!existingUser) {
+    throw new NotFoundException(`Task #${userId} not found`);
+   }
+   return existingUser;
+}
+async deleteUser(userId: string): Promise<UserDocument> {
+    const deletedUser = await this.userModel.findByIdAndDelete(userId);
+   if (!deletedUser) {
+     throw new NotFoundException(`Student #${userId} not found`);
+   }
+   return deletedUser;
+}
 }

@@ -1,4 +1,5 @@
 export class User {
-    email:string;
-    age:number;
+    name:string;
+    isChecked:boolean;
+    isDeleted:boolean;
 }
