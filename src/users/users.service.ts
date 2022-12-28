@@ -17,15 +17,12 @@ export class UsersService {
   async updateUser(userId: string, updateStudentDto: UpdateUserDto): Promise<UserDocument> {
     const existingUser = await this.userModel.findByIdAndUpdate(userId, updateStudentDto, { new: true });
    if (!existingUser) {
-     throw new NotFoundException(`Student #${userId} not found`);
+     throw new NotFoundException(`#${userId} not found`);
    }
    return existingUser;
 }
 async getAllUsers(): Promise<UserDocument[]> {
     const userData = await this.userModel.find();
-    if (!userData || userData.length == 0) {
-        throw new NotFoundException('Students data not found!');
-    }
     return userData;
 }
 async getUser(userId: string): Promise<UserDocument> {
