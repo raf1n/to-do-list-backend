@@ -22,7 +22,7 @@ export class UsersService {
    return existingUser;
 }
 async getAllUsers(): Promise<UserDocument[]> {
-    const userData = await this.userModel.find();
+    const userData = await this.userModel.find({isDeleted:false});
     return userData;
 }
 async getUser(userId: string): Promise<UserDocument> {
