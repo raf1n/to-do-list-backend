@@ -8,7 +8,9 @@ import { UsersModule } from "./users/users.module";
 @Module({
   imports: [
     UsersModule,
-    MongooseModule.forRoot("mongodb://0.0.0.0:27017/todo"),
+    MongooseModule.forRoot(
+      "mongodb+srv://rafin:CHoOPq3tTfzNx1DM@cluster0.khgm0kt.mongodb.net/todo"
+    ),
   ],
   controllers: [AppController],
   providers: [AppService],
