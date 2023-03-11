@@ -9,6 +9,7 @@ import { NotFoundException } from '@nestjs/common/exceptions';
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  
   async create(createUserDto: CreateUserDto):Promise<UserDocument> {
     const createdUser = new this.userModel(createUserDto);
     return createdUser.save();
